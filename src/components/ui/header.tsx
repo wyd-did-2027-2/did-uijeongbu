@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { content, type Locale } from "@/lib/content";
+import { Globe } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -60,12 +61,13 @@ export default function Header({ locale = "kr" }: { locale?: Locale }) {
           </ul>
         </nav>
         <Select value={value} onValueChange={handleLanguageChange}>
-          <SelectTrigger className="border-none font-black text-lg">
+          <SelectTrigger className="h-10 gap-1.5 rounded-full border-gray-200 bg-gray-50 px-3 text-sm font-semibold text-gray-700 shadow-none hover:bg-gray-100 transition-colors [&_svg]:size-3.5 [&_svg]:text-gray-500">
+            <Globe className="size-4 text-gray-500" />
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="font-black">
-            <SelectItem value="kr">KR</SelectItem>
-            <SelectItem value="en">ENG</SelectItem>
+          <SelectContent align="end" className="min-w-[7rem] rounded-xl border-gray-200 shadow-lg">
+            <SelectItem value="kr" className="rounded-lg font-medium">한국어</SelectItem>
+            <SelectItem value="en" className="rounded-lg font-medium">English</SelectItem>
           </SelectContent>
         </Select>
       </div>
