@@ -8,6 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Section, SectionTitle } from "../ui/common-layout";
 import type { CalendarItem } from "@/lib/notion";
+import { content, type Locale } from "@/lib/content";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -37,16 +38,18 @@ function CalendarCard({ date, title, description }: CalendarCardProps) {
 
 interface CalendarSectionProps {
   items: CalendarItem[];
+  locale?: Locale;
 }
 
-export default function CalendarSection({ items }: CalendarSectionProps) {
+export default function CalendarSection({ items, locale = "kr" }: CalendarSectionProps) {
   const swiperRef = useRef<SwiperType | null>(null);
   const [progress, setProgress] = useState(0);
+  const t = content[locale];
 
   return (
     <Section id="calendar" className="min-h-auto bg-gray-100">
       <div className="flex justify-between items-center mb-8">
-        <SectionTitle className="mb-0">CALENDAR</SectionTitle>
+        <SectionTitle className="mb-0">{t.sections.calendar}</SectionTitle>
         <div className="flex items-center gap-4">
           <div className="w-60 h-0.5 bg-gray-300 hidden sm:block relative">
             <div
@@ -59,7 +62,7 @@ export default function CalendarSection({ items }: CalendarSectionProps) {
               type="button"
               onClick={() => swiperRef.current?.slidePrev()}
               className="size-10 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
-              aria-label="이전"
+              aria-label={t.common.prev}
             >
               <ChevronLeft className="size-5 text-gray-600" />
             </button>
@@ -67,7 +70,7 @@ export default function CalendarSection({ items }: CalendarSectionProps) {
               type="button"
               onClick={() => swiperRef.current?.slideNext()}
               className="size-10 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
-              aria-label="다음"
+              aria-label={t.common.next}
             >
               <ChevronRight className="size-5 text-gray-600" />
             </button>

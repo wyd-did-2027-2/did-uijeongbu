@@ -10,6 +10,7 @@ import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Section, SectionTitle, BackDrop } from "../ui/common-layout";
 import type { SiteItem } from "@/lib/notion";
+import { content, type Locale } from "@/lib/content";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -44,11 +45,13 @@ function SiteCard({ title, href, imageSrc }: SiteCardProps) {
 
 interface SiteSectionProps {
   items: SiteItem[];
+  locale?: Locale;
 }
 
-export default function SiteSection({ items }: SiteSectionProps) {
+export default function SiteSection({ items, locale = "kr" }: SiteSectionProps) {
   const swiperRef = useRef<SwiperType | null>(null);
   const [progress, setProgress] = useState(0);
+  const t = content[locale];
 
   return (
     <Section
@@ -57,7 +60,7 @@ export default function SiteSection({ items }: SiteSectionProps) {
       style={{ backgroundImage: "url('https://r2-image-server.masterforce999.workers.dev/section-main03.jpeg')" }}
     >
       <div className="flex justify-between items-center mb-8 relative z-20">
-        <SectionTitle className="text-white mb-0">관련 사이트</SectionTitle>
+        <SectionTitle className="text-white mb-0">{t.sections.site}</SectionTitle>
 
         <div className="items-center gap-4 max-[1080px]:flex hidden">
           <div className="w-40 h-0.5 bg-white/30 hidden sm:block relative">
@@ -71,7 +74,7 @@ export default function SiteSection({ items }: SiteSectionProps) {
               type="button"
               onClick={() => swiperRef.current?.slidePrev()}
               className="size-10 rounded-full border border-white/30 bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer"
-              aria-label="이전"
+              aria-label={t.common.prev}
             >
               <ChevronLeft className="size-5 text-white" />
             </button>
@@ -79,7 +82,7 @@ export default function SiteSection({ items }: SiteSectionProps) {
               type="button"
               onClick={() => swiperRef.current?.slideNext()}
               className="size-10 rounded-full border border-white/30 bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer"
-              aria-label="다음"
+              aria-label={t.common.next}
             >
               <ChevronRight className="size-5 text-white" />
             </button>

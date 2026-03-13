@@ -10,10 +10,12 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { content, type Locale } from "@/lib/content";
 
 const POPUP_STORAGE_KEY = "popup_hidden_until";
 
-export default function Popup() {
+export default function Popup({ locale = "kr" }: { locale?: Locale }) {
+  const t = content[locale];
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -57,10 +59,10 @@ export default function Popup() {
 
         <DialogHeader className="px-6 pt-4">
           <DialogTitle className="heading04B text-gray-900">
-            2026 세계청년대회 안내
+            {t.popup.title}
           </DialogTitle>
           <DialogDescription className="body02R text-gray-900">
-            인천교구에서 준비하는 세계청년대회 소식을 확인해보세요.
+            {t.popup.description}
           </DialogDescription>
         </DialogHeader>
 
@@ -69,13 +71,13 @@ export default function Popup() {
             onClick={handleHideFor7Days}
             className="flex-1 py-4 body02M text-muted-foreground hover:bg-gray-50 transition-colors border-r border-border"
           >
-            7일간 보지 않기
+            {t.common.hideFor7Days}
           </button>
           <button
             onClick={handleClose}
             className="flex-1 py-4 body02M text-foreground hover:bg-gray-50 transition-colors"
           >
-            닫기
+            {t.common.close}
           </button>
         </DialogFooter>
       </DialogContent>

@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Section, SectionTitle } from "../ui/common-layout";
 import { Tag } from "../ui/tag";
 import type { NoticeItem } from "@/lib/notion";
+import { content, type Locale } from "@/lib/content";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -52,11 +53,13 @@ function HoverCard({
 
 interface NoticeSectionProps {
   items: NoticeItem[];
+  locale?: Locale;
 }
 
-export default function NoticeSection({ items }: NoticeSectionProps) {
+export default function NoticeSection({ items, locale = "kr" }: NoticeSectionProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const t = content[locale];
 
   const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -72,7 +75,7 @@ export default function NoticeSection({ items }: NoticeSectionProps) {
 
   return (
     <Section id="notice" className="bg-white min-h-auto">
-      <SectionTitle>공지사항</SectionTitle>
+      <SectionTitle>{t.sections.notice}</SectionTitle>
 
       <div className="h-px bg-border" />
 
@@ -81,7 +84,7 @@ export default function NoticeSection({ items }: NoticeSectionProps) {
           {currentItems.map((notice, index) => (
             <Link
               key={notice.id}
-              href={`/notice/${notice.id}`}
+              href={`/${locale}/notice/${notice.id}`}
               scroll={false}
               className="flex items-center justify-between py-10 text-black group max-sm:py-4 max-[1079px]:py-6"
               onMouseEnter={() => setHoveredIndex(index)}
@@ -107,7 +110,7 @@ export default function NoticeSection({ items }: NoticeSectionProps) {
             onClick={() => goToPage(currentPage - 1)}
             disabled={currentPage === 1}
             className="size-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-            aria-label="이전 페이지"
+            aria-label={t.common.prevPage}
           >
             <ChevronLeft className="size-5 text-gray-600" />
           </button>
@@ -132,7 +135,7 @@ export default function NoticeSection({ items }: NoticeSectionProps) {
             onClick={() => goToPage(currentPage + 1)}
             disabled={currentPage === totalPages}
             className="size-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
-            aria-label="다음 페이지"
+            aria-label={t.common.nextPage}
           >
             <ChevronRight className="size-5 text-gray-600" />
           </button>

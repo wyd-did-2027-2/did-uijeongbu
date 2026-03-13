@@ -3,13 +3,16 @@ import { Modal } from "@/components/modal";
 import { Tag } from "@/components/ui/tag";
 import { getNoticeById } from "@/lib/notion";
 import { notFound } from "next/navigation";
+import { isLocale } from "@/lib/content";
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }
 
 export default async function NoticeModal({ params }: PageProps) {
-  const { id } = await params;
+  const { id, locale } = await params;
+  if (!isLocale(locale)) notFound();
+
   const notice = await getNoticeById(id);
 
   if (!notice) {

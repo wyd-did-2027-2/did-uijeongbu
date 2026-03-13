@@ -3,9 +3,11 @@ import Link from "next/link";
 import { Tag } from "@/components/ui/tag";
 import { getNoticeById, getAllNoticeIds } from "@/lib/notion";
 import { notFound } from "next/navigation";
+import { isLocale } from "@/lib/content";
+import { content } from "@/lib/content";
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }
 
 export async function generateStaticParams() {
@@ -14,18 +16,23 @@ export async function generateStaticParams() {
 }
 
 export default async function NoticePage({ params }: PageProps) {
-  const { id } = await params;
+  const { id, locale: localeStr } = await params;
+  if (!isLocale(localeStr)) notFound();
+  const locale = localeStr;
+
   const notice = await getNoticeById(id);
 
   if (!notice) {
     notFound();
   }
 
+  const t = content[locale];
+
   return (
-    <main className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto px-4 py-12">
         <Link
-          href="/"
+          href={`/${locale}`}
           className="inline-flex items-center gap-2 body02M text-muted-foreground hover:text-foreground mb-8"
         >
           <svg
@@ -41,7 +48,7 @@ export default async function NoticePage({ params }: PageProps) {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          돌아가기
+          {t.notice.backLink}
         </Link>
 
         <article className="bg-card rounded-xl shadow-lg overflow-hidden">
@@ -69,6 +76,6 @@ export default async function NoticePage({ params }: PageProps) {
           </div>
         </article>
       </div>
-    </main>
+    </div>
   );
 }

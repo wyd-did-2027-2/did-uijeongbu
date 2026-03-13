@@ -13,6 +13,7 @@ import Flicking, { EVENTS } from "@egjs/flicking";
 import { AutoPlay, Pagination } from "@egjs/flicking-plugins";
 
 import { cn } from "@/lib/utils";
+import { content, type Locale } from "@/lib/content";
 
 import { Pause, Play, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -23,7 +24,8 @@ import SliderItem00 from "./slider-item/slider-item00";
 import SliderItem01 from "./slider-item/slider-item01";
 import SliderItem04 from "./slider-item/slider-item04";
 
-export default function MainSlider() {
+export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
+  const t = content[locale].slider;
   const flickingRef = useRef<HTMLDivElement>(null);
   const flickingInstanceRef = useRef<Flicking | null>(null);
   const autoPlayInstanceRef = useRef<AutoPlay | null>(null);
@@ -163,7 +165,7 @@ export default function MainSlider() {
         <button
           type="button"
           disabled={isAnimating}
-          title={isAutoPlay ? "일시정지 버튼" : "재생 버튼"}
+          title={isAutoPlay ? t.pause : t.play}
           className="mr-4 max-[727px]:hidden max-[1080px]:hidden flex w-15 justify-center items-center cursor-pointer"
           onClick={handleAutoPlay}
         >
@@ -187,7 +189,7 @@ export default function MainSlider() {
         </button>
         <button
           type="button"
-          title="이전 슬라이드 버튼"
+          title={t.prev}
           disabled={isAnimating}
           className="cursor-pointer"
           onClick={handlePrevSlide}
@@ -206,7 +208,7 @@ export default function MainSlider() {
         />
         <button
           type="button"
-          title="다음 슬라이드 버튼"
+          title={t.next}
           disabled={isAnimating}
           className="cursor-pointer"
           onClick={handleNextSlide}

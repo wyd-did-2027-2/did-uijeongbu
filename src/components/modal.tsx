@@ -52,7 +52,7 @@ export function Modal({ children }: ModalProps) {
           <button
             onClick={handleClose}
             className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
-            aria-label="닫기"
+            aria-label="Close"
           >
             <svg
               className="h-5 w-5"

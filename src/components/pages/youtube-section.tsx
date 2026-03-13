@@ -9,17 +9,20 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Section, SectionTitle } from "../ui/common-layout";
 import VideoCard from "@/components/ui/video-card";
 import type { YoutubeItem } from "@/lib/notion";
+import { content, type Locale } from "@/lib/content";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
 interface YoutubeSectionProps {
   items: YoutubeItem[];
+  locale?: Locale;
 }
 
-export default function YoutubeSection({ items }: YoutubeSectionProps) {
+export default function YoutubeSection({ items, locale = "kr" }: YoutubeSectionProps) {
   const swiperRef = useRef<SwiperType | null>(null);
   const [progress, setProgress] = useState(0);
+  const t = content[locale];
 
   return (
     <Section
@@ -27,7 +30,7 @@ export default function YoutubeSection({ items }: YoutubeSectionProps) {
       className="bg-no-repeat bg-fixed bg-cover min-h-auto"
     >
       <div className="flex justify-between items-center mb-8">
-        <SectionTitle className="mb-0">추천 영상</SectionTitle>
+        <SectionTitle className="mb-0">{t.sections.youtube}</SectionTitle>
         <div className="flex items-center gap-4">
           <div className="w-60 h-0.5 bg-gray-300 hidden sm:block relative">
             <div
@@ -40,7 +43,7 @@ export default function YoutubeSection({ items }: YoutubeSectionProps) {
               type="button"
               onClick={() => swiperRef.current?.slidePrev()}
               className="size-10 rounded-full border bg-black flex items-center justify-center cursor-pointer"
-              aria-label="이전"
+              aria-label={t.common.prev}
             >
               <ChevronLeft className="size-5 text-white" />
             </button>
@@ -48,7 +51,7 @@ export default function YoutubeSection({ items }: YoutubeSectionProps) {
               type="button"
               onClick={() => swiperRef.current?.slideNext()}
               className="size-10 rounded-full border bg-black flex items-center justify-center cursor-pointer"
-              aria-label="다음"
+              aria-label={t.common.next}
             >
               <ChevronRight className="size-5 text-white" />
             </button>

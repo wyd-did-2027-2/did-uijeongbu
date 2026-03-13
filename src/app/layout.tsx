@@ -1,6 +1,3 @@
-import type { Metadata } from "next";
-
-import SmoothScrolling from "@/components/smooth-scroll";
 import localFont from "next/font/local";
 
 import "./globals.css";
@@ -29,25 +26,14 @@ const pretendard = localFont({
   fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
 });
 
-export const metadata: Metadata = {
-  title: "WYD SEOUL 2027 DID UIJEONGBU",
-  description: "WYD SEOUL 2027 DID UIJEONGBU 공식 웹사이트",
-};
-
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="lenis lenis-smooth">
-      <body className={pretendard.className}>
-        <SmoothScrolling>{children}</SmoothScrolling>
-        {modal}
-        <div id="modal-root" />
-      </body>
+    <html className="lenis lenis-smooth">
+      <body className={pretendard.className}>{children}</body>
     </html>
   );
 }
