@@ -65,7 +65,7 @@ export default function Header({ locale = "kr" }: { locale?: Locale }) {
             <Globe className="size-4 text-gray-500" />
             <SelectValue />
           </SelectTrigger>
-          <SelectContent align="end" className="min-w-[7rem] rounded-xl border-gray-200 shadow-lg">
+          <SelectContent align="end" className="min-w-28 rounded-xl border-gray-200 shadow-lg">
             <SelectItem value="kr" className="rounded-lg font-medium">한국어</SelectItem>
             <SelectItem value="en" className="rounded-lg font-medium">English</SelectItem>
           </SelectContent>
