@@ -58,20 +58,6 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
         duration: 20000,
       });
 
-      const paginationInstance = new Pagination({
-        type: "fraction",
-        renderFraction: (currentClass, totalClass) => {
-          return `<span class="${currentClass} heading01B text-white"></span> <span class="heading03r text-gray-100"> / </span> <span class="${totalClass} heading03r text-gray-100"></span>`;
-        },
-        fractionCurrentFormat: (index) => {
-          return `0${index.toString()}`;
-        },
-        fractionTotalFormat: (index) => {
-          return `0${index.toString()}`;
-        },
-      });
-
-      flickingInstance.addPlugins(autoplayInstance, paginationInstance);
       flickingInstanceRef.current = flickingInstance;
       autoPlayInstanceRef.current = autoplayInstance;
 
@@ -80,7 +66,26 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
       flickingInstance.on("changed", (e) => setCurrentIndex(e.index));
 
       flickingInstance.once(EVENTS.READY, () => {
-        setPanelCount(flickingInstance.panelCount);
+        const count = flickingInstance.panelCount;
+        setPanelCount(count);
+
+        if (count > 1) {
+          const paginationInstance = new Pagination({
+            type: "fraction",
+            renderFraction: (currentClass, totalClass) => {
+              return `<span class="${currentClass} heading01B text-white"></span> <span class="heading03r text-gray-100"> / </span> <span class="${totalClass} heading03r text-gray-100"></span>`;
+            },
+            fractionCurrentFormat: (index) => {
+              return `0${index.toString()}`;
+            },
+            fractionTotalFormat: (index) => {
+              return `0${index.toString()}`;
+            },
+          });
+          flickingInstance.addPlugins(autoplayInstance, paginationInstance);
+        } else {
+          flickingInstance.addPlugins(autoplayInstance);
+        }
       });
 
       flickingInstance.resize();
