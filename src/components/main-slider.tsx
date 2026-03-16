@@ -50,10 +50,6 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
         autoInit: true,
       });
 
-      flickingInstance.once(EVENTS.READY, () => {
-        flickingInstance.element.classList.remove("flicking-hidden");
-      });
-
       const autoplayInstance = new AutoPlay({
         duration: 20000,
       });
@@ -66,6 +62,8 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
       flickingInstance.on("changed", (e) => setCurrentIndex(e.index));
 
       flickingInstance.once(EVENTS.READY, () => {
+        flickingInstance.element.classList.remove("flicking-hidden");
+
         const count = flickingInstance.panelCount;
         setPanelCount(count);
 
