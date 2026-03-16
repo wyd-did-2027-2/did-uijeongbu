@@ -33,6 +33,7 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
   const [isAutoPlay, setIsAutoPlay] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [panelCount, setPanelCount] = useState(0);
 
   useEffect(() => {
     if (flickingRef.current) {
@@ -77,6 +78,10 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
       flickingInstance.on("moveStart", () => setIsAnimating(true));
       flickingInstance.on("moveEnd", () => setIsAnimating(false));
       flickingInstance.on("changed", (e) => setCurrentIndex(e.index));
+
+      flickingInstance.once(EVENTS.READY, () => {
+        setPanelCount(flickingInstance.panelCount);
+      });
 
       flickingInstance.resize();
 
@@ -156,7 +161,7 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
           <SliderItem04 />
         </Panel>
       </div>
-      <div
+      {panelCount > 1 && <div
         className={cn(
           "item-inside-viewport absolute z-20 flex w-68 justify-between right-auto left-8 translate-x-0",
           "max-[727px]:bottom-[2dvh] max-[727px]:left-1/2 max-[727px]:-translate-x-1/2 max-[1080px]:bottom-[13.5dvw] max-[1080px]:left-1/2 max-[1080px]:-translate-x-1/2 bottom-[8dvw]",
@@ -219,7 +224,7 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
             stroke={[0, 2].includes(currentIndex) ? "#000" : "#fff"}
           />
         </button>
-      </div>
+      </div>}
     </div>
   );
 }

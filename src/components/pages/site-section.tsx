@@ -62,42 +62,46 @@ export default function SiteSection({ items, locale = "kr" }: SiteSectionProps) 
       <div className="flex justify-between items-center mb-8 relative z-20">
         <SectionTitle className="text-white mb-0">{t.sections.site}</SectionTitle>
 
-        <div className="items-center gap-4 max-[1080px]:flex hidden">
-          <div className="w-40 h-0.5 bg-white/30 hidden sm:block relative">
-            <div
-              className="absolute left-0 top-0 h-full bg-white transition-all duration-300"
-              style={{ width: `${progress * 100}%` }}
-            />
+        {items.length > 1 && (
+          <div className="items-center gap-4 max-[1080px]:flex hidden">
+            <div className="w-40 h-0.5 bg-white/30 hidden sm:block relative">
+              <div
+                className="absolute left-0 top-0 h-full bg-white transition-all duration-300"
+                style={{ width: `${progress * 100}%` }}
+              />
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => swiperRef.current?.slidePrev()}
+                className="size-10 rounded-full border border-white/30 bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer"
+                aria-label={t.common.prev}
+              >
+                <ChevronLeft className="size-5 text-white" />
+              </button>
+              <button
+                type="button"
+                onClick={() => swiperRef.current?.slideNext()}
+                className="size-10 rounded-full border border-white/30 bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer"
+                aria-label={t.common.next}
+              >
+                <ChevronRight className="size-5 text-white" />
+              </button>
+            </div>
           </div>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => swiperRef.current?.slidePrev()}
-              className="size-10 rounded-full border border-white/30 bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer"
-              aria-label={t.common.prev}
-            >
-              <ChevronLeft className="size-5 text-white" />
-            </button>
-            <button
-              type="button"
-              onClick={() => swiperRef.current?.slideNext()}
-              className="size-10 rounded-full border border-white/30 bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer"
-              aria-label={t.common.next}
-            >
-              <ChevronRight className="size-5 text-white" />
-            </button>
-          </div>
-        </div>
+        )}
       </div>
 
       <ul
         className="w-full gap-10 relative z-20 h-auto hidden min-[1081px]:grid"
         style={{
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(300px,100%), 1fr))",
+          gridTemplateColumns: items.length === 1
+            ? "370px"
+            : "repeat(auto-fit, minmax(min(300px,100%), 1fr))",
         }}
       >
         {items.map((site) => (
-          <li key={site.id}>
+          <li key={site.id} style={items.length === 1 ? { maxWidth: 370, maxHeight: 283 } : undefined}>
             <SiteCard
               title={site.title}
               href={site.href}
@@ -122,11 +126,13 @@ export default function SiteSection({ items, locale = "kr" }: SiteSectionProps) 
         >
           {items.map((site) => (
             <SwiperSlide key={site.id}>
-              <SiteCard
-                title={site.title}
-                href={site.href}
-                imageSrc={site.imageSrc}
-              />
+              <div style={items.length === 1 ? { maxWidth: 370, maxHeight: 283 } : undefined}>
+                <SiteCard
+                  title={site.title}
+                  href={site.href}
+                  imageSrc={site.imageSrc}
+                />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>

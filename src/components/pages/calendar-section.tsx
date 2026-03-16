@@ -50,32 +50,34 @@ export default function CalendarSection({ items, locale = "kr" }: CalendarSectio
     <Section id="calendar" className="min-h-auto bg-gray-100">
       <div className="flex justify-between items-center mb-8">
         <SectionTitle className="mb-0">{t.sections.calendar}</SectionTitle>
-        <div className="flex items-center gap-4">
-          <div className="w-60 h-0.5 bg-gray-300 hidden sm:block relative">
-            <div
-              className="absolute left-0 top-0 h-full bg-gray-900 transition-all duration-300"
-              style={{ width: `${progress * 100}%` }}
-            />
+        {items.length > 1 && (
+          <div className="flex items-center gap-4">
+            <div className="w-60 h-0.5 bg-gray-300 hidden sm:block relative">
+              <div
+                className="absolute left-0 top-0 h-full bg-gray-900 transition-all duration-300"
+                style={{ width: `${progress * 100}%` }}
+              />
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => swiperRef.current?.slidePrev()}
+                className="size-10 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
+                aria-label={t.common.prev}
+              >
+                <ChevronLeft className="size-5 text-gray-600" />
+              </button>
+              <button
+                type="button"
+                onClick={() => swiperRef.current?.slideNext()}
+                className="size-10 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
+                aria-label={t.common.next}
+              >
+                <ChevronRight className="size-5 text-gray-600" />
+              </button>
+            </div>
           </div>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => swiperRef.current?.slidePrev()}
-              className="size-10 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
-              aria-label={t.common.prev}
-            >
-              <ChevronLeft className="size-5 text-gray-600" />
-            </button>
-            <button
-              type="button"
-              onClick={() => swiperRef.current?.slideNext()}
-              className="size-10 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
-              aria-label={t.common.next}
-            >
-              <ChevronRight className="size-5 text-gray-600" />
-            </button>
-          </div>
-        </div>
+        )}
       </div>
 
       <Swiper
