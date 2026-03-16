@@ -61,29 +61,24 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
       flickingInstance.on("moveEnd", () => setIsAnimating(false));
       flickingInstance.on("changed", (e) => setCurrentIndex(e.index));
 
+      const paginationInstance = new Pagination({
+        type: "fraction",
+        renderFraction: (currentClass, totalClass) => {
+          return `<span class="${currentClass} heading01B text-white"></span> <span class="heading03r text-gray-100"> / </span> <span class="${totalClass} heading03r text-gray-100"></span>`;
+        },
+        fractionCurrentFormat: (index) => {
+          return `0${index.toString()}`;
+        },
+        fractionTotalFormat: (index) => {
+          return `0${index.toString()}`;
+        },
+      });
+
+      flickingInstance.addPlugins(autoplayInstance, paginationInstance);
+
       flickingInstance.once(EVENTS.READY, () => {
         flickingInstance.element.classList.remove("flicking-hidden");
-
-        const count = flickingInstance.panelCount;
-        setPanelCount(count);
-
-        if (count > 1) {
-          const paginationInstance = new Pagination({
-            type: "fraction",
-            renderFraction: (currentClass, totalClass) => {
-              return `<span class="${currentClass} heading01B text-white"></span> <span class="heading03r text-gray-100"> / </span> <span class="${totalClass} heading03r text-gray-100"></span>`;
-            },
-            fractionCurrentFormat: (index) => {
-              return `0${index.toString()}`;
-            },
-            fractionTotalFormat: (index) => {
-              return `0${index.toString()}`;
-            },
-          });
-          flickingInstance.addPlugins(autoplayInstance, paginationInstance);
-        } else {
-          flickingInstance.addPlugins(autoplayInstance);
-        }
+        setPanelCount(flickingInstance.panelCount);
       });
 
       flickingInstance.resize();
@@ -164,10 +159,11 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
           <SliderItem04 />
         </Panel>
       </div>
-      {panelCount > 1 && <div
+      <div
         className={cn(
           "item-inside-viewport absolute z-20 flex w-68 justify-between right-auto left-8 translate-x-0",
           "max-[727px]:bottom-[2dvh] max-[727px]:left-1/2 max-[727px]:-translate-x-1/2 max-[1080px]:bottom-[13.5dvw] max-[1080px]:left-1/2 max-[1080px]:-translate-x-1/2 bottom-[8dvw]",
+          panelCount <= 1 && "hidden",
         )}
       >
         <button
@@ -227,7 +223,7 @@ export default function MainSlider({ locale = "kr" }: { locale?: Locale }) {
             stroke={[0, 2].includes(currentIndex) ? "#000" : "#fff"}
           />
         </button>
-      </div>}
+      </div>
     </div>
   );
 }

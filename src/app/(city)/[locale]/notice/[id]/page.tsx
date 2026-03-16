@@ -11,8 +11,12 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const ids = await getAllNoticeIds();
-  return ids.map((id) => ({ id }));
+  const [krIds, enIds] = await Promise.all([
+    getAllNoticeIds("kr"),
+    getAllNoticeIds("en"),
+  ]);
+  const allIds = [...new Set([...krIds, ...enIds])];
+  return allIds.map((id) => ({ id }));
 }
 
 export default async function NoticePage({ params }: PageProps) {
@@ -52,14 +56,16 @@ export default async function NoticePage({ params }: PageProps) {
         </Link>
 
         <article className="bg-card rounded-xl shadow-lg overflow-hidden">
-          <div className="relative w-full aspect-video">
-            <Image
-              src={notice.image}
-              alt={notice.title}
-              fill
-              className="object-cover"
-            />
-          </div>
+          {notice.image && (
+            <div className="relative w-full aspect-video">
+              <Image
+                src={notice.image}
+                alt={notice.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
           <div className="p-6 md:p-10">
             <div className="flex items-center gap-3 mb-6">
               <Tag shape="capsule">{notice.category}</Tag>

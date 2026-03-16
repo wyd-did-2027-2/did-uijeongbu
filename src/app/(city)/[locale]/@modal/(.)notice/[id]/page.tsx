@@ -21,14 +21,16 @@ export default async function NoticeModal({ params }: PageProps) {
 
   return (
     <Modal>
-      <div className="relative w-full aspect-video">
-        <Image
-          src={notice.image}
-          alt={notice.title}
-          fill
-          className="object-cover"
-        />
-      </div>
+      {notice.image && (
+        <div className="relative w-full aspect-video">
+          <Image
+            src={notice.image}
+            alt={notice.title}
+            fill
+            className="object-cover"
+          />
+        </div>
+      )}
       <div className="p-6 md:p-8">
         <div className="flex items-center gap-3 mb-4">
           <Tag shape="capsule">{notice.category}</Tag>

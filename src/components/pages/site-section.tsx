@@ -25,13 +25,15 @@ function SiteCard({ title, href, imageSrc }: SiteCardProps) {
   return (
     <div className="relative bg-black hover:[&_span]:bg-black">
       <Link className="block" href={href} target="_blank">
-        <Image
-          width={390}
-          height={293}
-          alt="이미지"
-          src={imageSrc}
-          className="w-full"
-        />
+        {imageSrc && (
+          <Image
+            width={390}
+            height={293}
+            alt="이미지"
+            src={imageSrc}
+            className="w-full"
+          />
+        )}
         <div className="flex justify-between absolute pb-3.5 px-4 w-full items-center bottom-0">
           <h3 className="heading03B text-white">{title}</h3>
           <span className="size-12 rounded-full flex items-center justify-center backdrop-blur-[5px] shadow-[inset_-1px_-1px_0px_rgba(255,255,255,0.5)] transition-colors">

@@ -28,14 +28,16 @@ function HoverCard({
     >
       {notice && (
         <>
-          <div className="relative w-full aspect-4/3">
-            <Image
-              src={notice.image}
-              alt={notice.title}
-              fill
-              className="object-cover"
-            />
-          </div>
+          {notice.image && (
+            <div className="relative w-full aspect-4/3">
+              <Image
+                src={notice.image}
+                alt={notice.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
           <div className="p-5">
             <div className="flex items-center gap-3 mb-3">
               <Tag shape="capsule">{notice.category}</Tag>
