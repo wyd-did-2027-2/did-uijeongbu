@@ -97,7 +97,7 @@ export default function SiteSection({ items, locale = "kr" }: SiteSectionProps) 
       <ul
         className="w-full gap-10 relative z-20 h-auto hidden min-[1081px]:grid"
         style={{
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(283px, 100%), 370px))",
+          gridTemplateColumns: "repeat(auto-fill, minmax(min(289px, 100%), 1fr))",
         }}
       >
         {items.map((site) => (
