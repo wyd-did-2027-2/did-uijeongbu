@@ -23,7 +23,7 @@ interface SiteCardProps {
 
 function SiteCard({ title, href, imageSrc }: SiteCardProps) {
   return (
-    <div className="relative bg-black hover:[className="relative bg-black hover:[&_span]:bg-black"_span]:bg-black size-full">
+    <div className="relative bg-black hover:[&_span]:bg-black size-full">
       <Link className="block size-full" href={href} target="_blank">
         {imageSrc && (
           <Image
