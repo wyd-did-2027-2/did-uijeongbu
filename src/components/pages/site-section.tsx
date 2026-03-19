@@ -66,9 +66,9 @@ export default function SiteSection({ items, locale = "kr" }: SiteSectionProps) 
 
         {items.length > 1 && (
           <div className="items-center gap-4 max-[1080px]:flex hidden">
-            <div className="w-40 h-0.5 bg-white/30 hidden sm:block relative">
+            <div className="w-60 h-0.5 bg-gray-300 hidden sm:block relative">
               <div
-                className="absolute left-0 top-0 h-full bg-white transition-all duration-300"
+                className="absolute left-0 top-0 h-full bg-black transition-all duration-300"
                 style={{ width: `${progress * 100}%` }}
               />
             </div>
