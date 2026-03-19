@@ -76,18 +76,18 @@ export default function SiteSection({ items, locale = "kr" }: SiteSectionProps) 
               <button
                 type="button"
                 onClick={() => swiperRef.current?.slidePrev()}
-                className="size-10 rounded-full border border-white/30 bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer"
+                className="size-10 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
                 aria-label={t.common.prev}
               >
-                <ChevronLeft className="size-5 text-white" />
+                <ChevronLeft className="size-5" />
               </button>
               <button
                 type="button"
                 onClick={() => swiperRef.current?.slideNext()}
-                className="size-10 rounded-full border border-white/30 bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer"
+                className="size-10 rounded-full border border-gray-300 bg-white flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
                 aria-label={t.common.next}
               >
-                <ChevronRight className="size-5 text-white" />
+                <ChevronRight className="size-5" />
               </button>
             </div>
           </div>
