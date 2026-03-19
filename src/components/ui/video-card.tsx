@@ -27,7 +27,7 @@ export default function VideoCard({ videoId, title, date }: VideoCardProps) {
             {title}
           </h3>
         </Link>
-        <p className="body01M max-md:heading04M">{date}</p>
+        {date && <p className="body01M max-md:heading04M">{date}</p>}
       </div>
     </li>
   );
