@@ -3,6 +3,7 @@ import type {
   PageObjectResponse,
   RichTextItemResponse,
 } from "@notionhq/client/build/src/api-endpoints";
+import type { Locale } from "./content";
 
 interface DateResponse {
   start: string;
@@ -75,9 +76,16 @@ function formatDate(dateObj: DateResponse | null): string {
   return formatSingle(dateObj.start);
 }
 
-export async function getCalendarData(): Promise<CalendarItem[]> {
+function getDatabaseId(key: string, locale: Locale = "kr"): string | undefined {
+  if (locale === "en") {
+    return process.env[`${key}_EN`] || process.env[key];
+  }
+  return process.env[key];
+}
+
+export async function getCalendarData(locale: Locale = "kr"): Promise<CalendarItem[]> {
   try {
-    const databaseId = process.env.NOTION_CALENDAR_DATABASE_ID;
+    const databaseId = getDatabaseId("NOTION_CALENDAR_DATABASE_ID", locale);
 
     if (!databaseId) {
       console.error("NOTION_CALENDAR_DATABASE_ID is not set");
@@ -119,8 +127,8 @@ export async function getCalendarData(): Promise<CalendarItem[]> {
   }
 }
 
-export async function getCalendarDataRaw() {
-  const databaseId = process.env.NOTION_CALENDAR_DATABASE_ID;
+export async function getCalendarDataRaw(locale: Locale = "kr") {
+  const databaseId = getDatabaseId("NOTION_CALENDAR_DATABASE_ID", locale);
 
   if (!databaseId) {
     throw new Error("NOTION_CALENDAR_DATABASE_ID is not set");
@@ -162,9 +170,9 @@ function getFileUrl(
   return "";
 }
 
-export async function getNoticeData(): Promise<NoticeItem[]> {
+export async function getNoticeData(locale: Locale = "kr"): Promise<NoticeItem[]> {
   try {
-    const databaseId = process.env.NOTION_NOTICE_DATABASE_ID;
+    const databaseId = getDatabaseId("NOTION_NOTICE_DATABASE_ID", locale);
 
     if (!databaseId) {
       console.error("NOTION_NOTICE_DATABASE_ID is not set");
@@ -288,8 +296,8 @@ export async function getNoticeById(id: string): Promise<NoticeDetail | null> {
   }
 }
 
-export async function getAllNoticeIds(): Promise<string[]> {
-  const databaseId = process.env.NOTION_NOTICE_DATABASE_ID;
+export async function getAllNoticeIds(locale: Locale = "kr"): Promise<string[]> {
+  const databaseId = getDatabaseId("NOTION_NOTICE_DATABASE_ID", locale);
 
   if (!databaseId) {
     throw new Error("NOTION_NOTICE_DATABASE_ID is not set");
@@ -308,9 +316,9 @@ export interface YoutubeItem {
   date: string;
 }
 
-export async function getYoutubeData(): Promise<YoutubeItem[]> {
+export async function getYoutubeData(locale: Locale = "kr"): Promise<YoutubeItem[]> {
   try {
-    const databaseId = process.env.NOTION_YOUTUBE_DATABASE_ID;
+    const databaseId = getDatabaseId("NOTION_YOUTUBE_DATABASE_ID", locale);
 
     if (!databaseId) {
       console.error("NOTION_YOUTUBE_DATABASE_ID is not set");
@@ -359,9 +367,9 @@ export interface FaqItem {
   content: string;
 }
 
-export async function getFaqData(): Promise<FaqItem[]> {
+export async function getFaqData(locale: Locale = "kr"): Promise<FaqItem[]> {
   try {
-    const databaseId = process.env.NOTION_FAQ_DATABASE_ID;
+    const databaseId = getDatabaseId("NOTION_FAQ_DATABASE_ID", locale);
 
     if (!databaseId) {
       console.error("NOTION_FAQ_DATABASE_ID is not set");
@@ -408,9 +416,9 @@ export interface SiteItem {
   imageSrc: string;
 }
 
-export async function getSiteData(): Promise<SiteItem[]> {
+export async function getSiteData(locale: Locale = "kr"): Promise<SiteItem[]> {
   try {
-    const databaseId = process.env.NOTION_SITE_DATABASE_ID;
+    const databaseId = getDatabaseId("NOTION_SITE_DATABASE_ID", locale);
 
     if (!databaseId) {
       console.error("NOTION_SITE_DATABASE_ID is not set");

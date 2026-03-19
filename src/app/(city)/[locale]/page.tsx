@@ -33,11 +33,11 @@ export default async function Home({
 
   const [calendarItems, noticeItems, youtubeItems, faqItems, siteItems] =
     await Promise.all([
-      getCalendarData(),
-      getNoticeData(),
-      getYoutubeData(),
-      getFaqData(),
-      getSiteData(),
+      getCalendarData(locale),
+      getNoticeData(locale),
+      getYoutubeData(locale),
+      getFaqData(locale),
+      getSiteData(locale),
     ]);
 
   return (
