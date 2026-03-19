@@ -27,10 +27,10 @@ export const content = {
     footer: {
       logoAlt: "wyd did 의정부 로고",
       address:
-        "경기도 의정부시 신흥로 261 WYD 의정부 교구대회 사무국",
-      email: "qna.wyd.doc.icn@gmail.com",
-      phone: "032-765-6997",
-      hours: "운영시간: 10:00 ~ 18:00",
+        "경기도 의정부시 신흥로265번길 27, 2027 WYD 의정부 교구대회 조직위원회 사무국",
+      email: "wyd@uca.or.kr",
+      phone: "031-850-1502",
+      hours: "운영시간: 월-금 09:00~18:00 (점심시간 12:00~13:00)",
       copyright: "Copyright ⓒ 의정부교구 All rights reserved",
     },
     slider: {
@@ -85,10 +85,10 @@ export const content = {
     footer: {
       logoAlt: "wyd did Uijeongbu logo",
       address:
-        "261, Sinheung-ro, Uijeongbu-si, Gyeonggi-do, WYD Uijeongbu Diocesan Committee",
-      email: "qna.wyd.doc.icn@gmail.com",
-      phone: "032-765-6997",
-      hours: "Hours: 10:00 ~ 18:00",
+        "27, Sinheung-ro 265beon-gil, Uijeongbu-si, Gyeonggi-do, 2027 WYD Uijeongbu Diocesan Organizing Committee",
+      email: "wyd@uca.or.kr",
+      phone: "031-850-1502",
+      hours: "Hours: Mon-Fri 09:00~18:00 (Lunch 12:00~13:00)",
       copyright: "Copyright ⓒ Diocese of Uijeongbu All rights reserved",
     },
     slider: {
