@@ -88,11 +88,11 @@ export default function NoticeSection({ items, locale = "kr" }: NoticeSectionPro
               key={notice.id}
               href={`/${locale}/notice/${notice.id}`}
               scroll={false}
-              className="flex items-center justify-between py-10 text-black group max-sm:py-4 max-[1079px]:py-6"
+              className="flex items-center justify-between py-8 text-black group"
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <span className="heading02M max-[1079px]:heading03M max-sm:heading04M hover:underline underline-offset-4 max-w-3/4">
+              <span className="heading04B hover:underline underline-offset-4 max-w-3/4">
                 {notice.title}
               </span>
               <span className="body02R text-gray-600 max-md:body03R">

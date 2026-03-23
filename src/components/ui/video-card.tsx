@@ -17,13 +17,13 @@ export default function VideoCard({ videoId, title, date }: VideoCardProps) {
           allowFullScreen
         />
       </div>
-      <div className="flex-1 flex flex-col pt-10 gap-y-15 text-gray-900 max-sm:gap-y-8">
+      <div className="flex-1 flex flex-col pt-6 gap-y-15 text-gray-900 max-sm:gap-y-8">
         <Link
           href={`https://www.youtube.com/watch?v=${videoId}`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <h3 className="heading01B max-sm:heading04B hover:text-primary transition-colors">
+          <h3 className="heading03B max-sm:heading04B hover:text-primary transition-colors">
             {title}
           </h3>
         </Link>
