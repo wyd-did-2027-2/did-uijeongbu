@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Tag } from "@/components/ui/tag";
+import { NotionBlocks } from "@/components/ui/notion-blocks";
 import { getNoticeById, getAllNoticeIds } from "@/lib/notion";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/content";
@@ -75,9 +76,7 @@ export default async function NoticePage({ params }: PageProps) {
             </div>
             <h1 className="heading02B text-foreground mb-6">{notice.title}</h1>
             <div className="prose prose-gray max-w-none">
-              <p className="body01R text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                {notice.content}
-              </p>
+              <NotionBlocks blocks={notice.blocks} />
             </div>
           </div>
         </article>

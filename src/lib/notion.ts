@@ -2,6 +2,7 @@ import { Client } from "@notionhq/client";
 import type {
   PageObjectResponse,
   RichTextItemResponse,
+  BlockObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import type { Locale } from "./content";
 
@@ -150,6 +151,7 @@ export interface NoticeItem {
 
 export interface NoticeDetail extends NoticeItem {
   content: string;
+  blocks: BlockObjectResponse[];
 }
 
 function getFileUrl(
@@ -259,24 +261,26 @@ export async function getNoticeById(id: string): Promise<NoticeDetail | null> {
         : "";
 
     // 페이지 블록 내용 가져오기
-    const blocks = await notion.blocks.children.list({
+    const blocksResponse = await notion.blocks.children.list({
       block_id: id,
     });
 
-    const content = blocks.results
+    const blocks = blocksResponse.results.filter(
+      (block): block is BlockObjectResponse => "type" in block
+    );
+
+    const content = blocks
       .map((block) => {
-        if ("type" in block) {
-          const blockType = block.type;
-          const blockData = block[blockType as keyof typeof block];
-          if (
-            blockData &&
-            typeof blockData === "object" &&
-            "rich_text" in blockData
-          ) {
-            return getPlainText(
-              blockData.rich_text as RichTextItemResponse[]
-            );
-          }
+        const blockType = block.type;
+        const blockData = block[blockType as keyof typeof block];
+        if (
+          blockData &&
+          typeof blockData === "object" &&
+          "rich_text" in blockData
+        ) {
+          return getPlainText(
+            blockData.rich_text as RichTextItemResponse[]
+          );
         }
         return "";
       })
@@ -290,6 +294,7 @@ export async function getNoticeById(id: string): Promise<NoticeDetail | null> {
       category,
       image,
       content,
+      blocks,
     };
   } catch {
     return null;
