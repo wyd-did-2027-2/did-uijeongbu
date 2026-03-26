@@ -17,7 +17,9 @@ export async function generateStaticParams() {
     getAllNoticeIds("en"),
   ]);
   const allIds = [...new Set([...krIds, ...enIds])];
-  return allIds.map((id) => ({ id }));
+  return ["kr", "en"].flatMap((locale) =>
+    allIds.map((id) => ({ locale, id })),
+  );
 }
 
 export default async function NoticePage({ params }: PageProps) {
