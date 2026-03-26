@@ -226,7 +226,12 @@ export async function getNoticeData(locale: Locale = "kr"): Promise<NoticeItem[]
   }
 }
 
+const UUID_REGEX = /^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/i;
+
 export async function getNoticeById(id: string): Promise<NoticeDetail | null> {
+  if (!UUID_REGEX.test(id)) {
+    return null;
+  }
   try {
     const page = (await notion.pages.retrieve({
       page_id: id,
