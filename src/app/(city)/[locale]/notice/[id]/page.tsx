@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Tag } from "@/components/ui/tag";
 import { NotionBlocks } from "@/components/ui/notion-blocks";
@@ -58,30 +57,29 @@ export default async function NoticePage({ params }: PageProps) {
           {t.notice.backLink}
         </Link>
 
-        <article className="bg-card rounded-xl shadow-lg overflow-hidden">
-          {notice.image && (
-            <div className="relative w-full aspect-video">
-              <Image
-                src={notice.image}
-                alt={notice.title}
-                fill
-                className="object-cover"
-              />
-            </div>
-          )}
-          <div className="p-6 md:p-10">
-            <div className="flex items-center gap-3 mb-6">
+        <article className="bg-card rounded-xl overflow-hidden">
+          <div className="p-6 md:p-8">
+            <div className="flex items-center gap-3 mb-4">
               <Tag shape="capsule">{notice.category}</Tag>
-              <span className="body02R text-muted-foreground">
+              <span className="body03R text-muted-foreground">
                 {notice.date}
               </span>
             </div>
-            <h1 className="heading02B text-foreground mb-6">{notice.title}</h1>
+            <h1 className="heading03B text-foreground mb-4">{notice.title}</h1>
             <div className="prose prose-gray max-w-none">
               <NotionBlocks blocks={notice.blocks} />
             </div>
           </div>
         </article>
+
+        <div className="mt-8 flex justify-center">
+          <Link
+            href={`/${locale}#notice`}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg body02M hover:bg-primary/90 transition-colors"
+          >
+            {t.notice.backLink}
+          </Link>
+        </div>
       </div>
     </div>
   );

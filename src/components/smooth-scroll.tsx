@@ -1,7 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useRef } from "react";
 import Lenis from "lenis";
+
+const LenisContext = createContext<Lenis | null>(null);
+
+export function useLenis() {
+  return useContext(LenisContext);
+}
 
 export default function SmoothScrolling({
   children,
@@ -20,6 +26,8 @@ export default function SmoothScrolling({
       touchMultiplier: 2,
     });
 
+    (window as unknown as { lenis: Lenis }).lenis = lenisRef.current;
+
     function raf(time: number) {
       lenisRef.current?.raf(time);
       requestAnimationFrame(raf);
@@ -29,8 +37,13 @@ export default function SmoothScrolling({
 
     return () => {
       lenisRef.current?.destroy();
+      delete (window as unknown as { lenis?: Lenis }).lenis;
     };
   }, []);
 
-  return <>{children}</>;
+  return (
+    <LenisContext.Provider value={lenisRef.current}>
+      {children}
+    </LenisContext.Provider>
+  );
 }

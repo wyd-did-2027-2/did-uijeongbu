@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { Modal } from "@/components/modal";
 import { Tag } from "@/components/ui/tag";
+import { NotionBlocks } from "@/components/ui/notion-blocks";
 import { getNoticeById } from "@/lib/notion";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/content";
@@ -19,27 +19,20 @@ export default async function NoticeModal({ params }: PageProps) {
     notFound();
   }
 
+  const header = (
+    <div>
+      <div className="flex items-center gap-3 mb-3">
+        <Tag shape="capsule">{notice.category}</Tag>
+        <span className="body03R text-muted-foreground">{notice.date}</span>
+      </div>
+      <h2 className="heading03B text-foreground">{notice.title}</h2>
+    </div>
+  );
+
   return (
-    <Modal>
-      {notice.image && (
-        <div className="relative w-full aspect-video">
-          <Image
-            src={notice.image}
-            alt={notice.title}
-            fill
-            className="object-cover"
-          />
-        </div>
-      )}
-      <div className="p-6 md:p-8">
-        <div className="flex items-center gap-3 mb-4">
-          <Tag shape="capsule">{notice.category}</Tag>
-          <span className="body03R text-muted-foreground">{notice.date}</span>
-        </div>
-        <h2 className="heading03B text-foreground mb-4">{notice.title}</h2>
-        <p className="body01R text-muted-foreground leading-relaxed whitespace-pre-wrap">
-          {notice.content}
-        </p>
+    <Modal header={header}>
+      <div className="prose prose-gray max-w-none">
+        <NotionBlocks blocks={notice.blocks} />
       </div>
     </Modal>
   );
