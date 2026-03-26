@@ -1,6 +1,9 @@
 "use client";
 
-import { BlockObjectResponse, RichTextItemResponse } from "@notionhq/client";
+import type {
+  BlockObjectResponse,
+  RichTextItemResponse,
+} from "@notionhq/client/build/src/api-endpoints";
 import Link from "next/link";
 
 const NOTION_COLOR_MAP: Record<string, string> = {
