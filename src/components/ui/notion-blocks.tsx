@@ -272,6 +272,62 @@ function NotionBlock({ block }: { block: BlockObjectResponse }) {
         <div className="my-[4px] text-[14px] text-[rgb(120,119,116)]">목차</div>
       );
 
+    case "table": {
+      const tableBlock = block as BlockObjectResponse & {
+        children?: BlockObjectResponse[];
+        table: { has_column_header: boolean; has_row_header: boolean };
+      };
+      const rows = tableBlock.children ?? [];
+      const hasColumnHeader = tableBlock.table.has_column_header;
+      const hasRowHeader = tableBlock.table.has_row_header;
+
+      return (
+        <div className="my-[4px] w-full overflow-x-auto">
+          <table className="w-full border-collapse text-[14px]">
+            {rows.map((row, rowIdx) => {
+              if (row.type !== "table_row") return null;
+              const cells = (
+                row as BlockObjectResponse & {
+                  table_row: { cells: RichTextItemResponse[][] };
+                }
+              ).table_row.cells;
+              const isHeaderRow = hasColumnHeader && rowIdx === 0;
+
+              const Tag = isHeaderRow ? "thead" : "tbody";
+              const CellTag = isHeaderRow ? "th" : "td";
+
+              return (
+                <Tag key={row.id}>
+                  <tr>
+                    {cells.map((cell, cellIdx) => {
+                      const isHeaderCell =
+                        isHeaderRow || (hasRowHeader && cellIdx === 0);
+                      const ActualCellTag = isHeaderCell ? "th" : CellTag;
+                      return (
+                        <ActualCellTag
+                          key={cellIdx}
+                          className={`border border-[rgb(233,233,231)] px-[8px] py-[6px] ${
+                            isHeaderCell
+                              ? "bg-[rgb(247,246,243)] font-semibold"
+                              : ""
+                          }`}
+                        >
+                          {renderRichText(cell)}
+                        </ActualCellTag>
+                      );
+                    })}
+                  </tr>
+                </Tag>
+              );
+            })}
+          </table>
+        </div>
+      );
+    }
+
+    case "table_row":
+      return null;
+
     case "column_list":
     case "column":
       return null;

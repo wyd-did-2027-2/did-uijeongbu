@@ -31,7 +31,10 @@ export interface CalendarItem {
 // 페이지네이션 헬퍼 함수
 async function queryDatabaseWithPagination(
   databaseId: string,
-  sorts?: Array<{ property: string; direction: "ascending" | "descending" }>
+  sorts?: Array<
+    | { property: string; direction: "ascending" | "descending" }
+    | { timestamp: "created_time" | "last_edited_time"; direction: "ascending" | "descending" }
+  >
 ): Promise<PageObjectResponse[]> {
   let allResults: PageObjectResponse[] = [];
   let hasMore = true;
@@ -274,6 +277,19 @@ export async function getNoticeById(id: string): Promise<NoticeDetail | null> {
       (block): block is BlockObjectResponse => "type" in block
     );
 
+    // table 블록의 자식(table_row) 가져오기
+    for (const block of blocks) {
+      if (block.type === "table" && block.has_children) {
+        const childrenResponse = await notion.blocks.children.list({
+          block_id: block.id,
+        });
+        (block as BlockObjectResponse & { children?: BlockObjectResponse[] }).children =
+          childrenResponse.results.filter(
+            (child): child is BlockObjectResponse => "type" in child
+          );
+      }
+    }
+
     const content = blocks
       .map((block) => {
         const blockType = block.type;
@@ -386,7 +402,9 @@ export async function getFaqData(locale: Locale = "kr"): Promise<FaqItem[]> {
       return [];
     }
 
-    const pages = await queryDatabaseWithPagination(databaseId);
+    const pages = await queryDatabaseWithPagination(databaseId, [
+      { property: "날짜", direction: "ascending" },
+    ]);
 
     return pages.map((page) => {
       const properties = page.properties;
