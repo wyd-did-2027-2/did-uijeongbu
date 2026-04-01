@@ -47,10 +47,10 @@ export default function Header({ locale = "kr" }: { locale?: Locale }) {
               <Link href="#calendar">{t.nav.calendar}</Link>
             </li>
             <li>
-              <Link href="#youtube">{t.nav.youtube}</Link>
+              <Link href="#notice">{t.nav.notice}</Link>
             </li>
             <li>
-              <Link href="#notice">{t.nav.notice}</Link>
+              <Link href="#youtube">{t.nav.youtube}</Link>
             </li>
             <li>
               <Link href="#site">{t.nav.site}</Link>
@@ -65,9 +65,16 @@ export default function Header({ locale = "kr" }: { locale?: Locale }) {
             <Globe className="size-4 text-gray-500" />
             <SelectValue />
           </SelectTrigger>
-          <SelectContent align="end" className="min-w-28 rounded-xl border-gray-200 shadow-lg">
-            <SelectItem value="kr" className="rounded-lg font-medium">한국어</SelectItem>
-            <SelectItem value="en" className="rounded-lg font-medium">English</SelectItem>
+          <SelectContent
+            align="end"
+            className="min-w-28 rounded-xl border-gray-200 shadow-lg"
+          >
+            <SelectItem value="kr" className="rounded-lg font-medium">
+              한국어
+            </SelectItem>
+            <SelectItem value="en" className="rounded-lg font-medium">
+              English
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
