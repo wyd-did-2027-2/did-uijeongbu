@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Scrollbar } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -41,10 +41,40 @@ interface CalendarSectionProps {
   locale?: Locale;
 }
 
+function getClosestDateIndex(items: CalendarItem[]): number {
+  if (items.length === 0) return 0;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  let closestIndex = 0;
+  let closestDiff = Infinity;
+
+  for (let i = 0; i < items.length; i++) {
+    const dateStr = items[i].date.split(" ~ ")[0];
+    const parts = dateStr.split(".");
+    if (parts.length !== 3) continue;
+
+    const year = 2000 + Number(parts[0]);
+    const month = Number(parts[1]) - 1;
+    const day = Number(parts[2]);
+    const itemDate = new Date(year, month, day);
+
+    const diff = Math.abs(itemDate.getTime() - today.getTime());
+    if (diff < closestDiff) {
+      closestDiff = diff;
+      closestIndex = i;
+    }
+  }
+
+  return closestIndex;
+}
+
 export default function CalendarSection({ items, locale = "kr" }: CalendarSectionProps) {
   const swiperRef = useRef<SwiperType | null>(null);
   const [progress, setProgress] = useState(0);
   const t = content[locale];
+  const initialSlide = useMemo(() => getClosestDateIndex(items), [items]);
 
   return (
     <Section id="calendar" className="min-h-auto bg-gray-100">
@@ -88,6 +118,7 @@ export default function CalendarSection({ items, locale = "kr" }: CalendarSectio
         onProgress={(_, prog) => {
           setProgress(prog);
         }}
+        initialSlide={initialSlide}
         spaceBetween={0}
         slidesPerView={1}
         breakpoints={{
