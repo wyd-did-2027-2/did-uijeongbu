@@ -20,7 +20,7 @@ export const content = {
       ogLocale: "ko_KR",
     },
     header: {
-      logoAlt: "wyd did 의정부 로고",
+      logoAlt: "wyd did 의정부",
       nav: {
         home: "홈",
         calendar: "캘린더",
@@ -31,7 +31,7 @@ export const content = {
       },
     },
     footer: {
-      logoAlt: "wyd did 의정부 로고",
+      logoAlt: "wyd did 의정부",
       address:
         "경기도 의정부시 신흥로265번길 27, 2027 WYD 의정부 교구대회 조직위원회 사무국",
       email: "wyd@uca.or.kr",
@@ -78,7 +78,7 @@ export const content = {
       ogLocale: "en_US",
     },
     header: {
-      logoAlt: "wyd did Uijeongbu logo",
+      logoAlt: "wyd did Uijeongbu",
       nav: {
         home: "Home",
         calendar: "Calendar",
@@ -89,7 +89,7 @@ export const content = {
       },
     },
     footer: {
-      logoAlt: "wyd did Uijeongbu logo",
+      logoAlt: "wyd did Uijeongbu",
       address:
         "27, Sinheung-ro 265beon-gil, Uijeongbu-si, Gyeonggi-do, 2027 WYD Uijeongbu Diocesan Organizing Committee",
       email: "wyd@uca.or.kr",
