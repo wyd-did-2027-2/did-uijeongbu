@@ -17,7 +17,7 @@ export const notion = new Client({
   fetch: (url, init) =>
     fetch(url, {
       ...init,
-      next: { revalidate: 60 },
+      next: { revalidate: 3600 },
     }),
 });
 
@@ -157,22 +157,9 @@ export interface NoticeDetail extends NoticeItem {
   blocks: BlockObjectResponse[];
 }
 
-function getFileUrl(
-  files: Array<{
-    type: string;
-    file?: { url: string };
-    external?: { url: string };
-  }>
-): string {
-  if (files.length === 0) return ""; // 기본 이미지
-  const file = files[0];
-  if (file.type === "file" && file.file) {
-    return file.file.url;
-  }
-  if (file.type === "external" && file.external) {
-    return file.external.url;
-  }
-  return "";
+function proxyFileUrl(pageId: string, prop: string, hasFiles: boolean): string {
+  if (!hasFiles) return "";
+  return `/api/image-proxy?pageId=${pageId}&prop=${encodeURIComponent(prop)}`;
 }
 
 export async function getNoticeData(locale: Locale = "kr"): Promise<NoticeItem[]> {
@@ -206,14 +193,12 @@ export async function getNoticeData(locale: Locale = "kr"): Promise<NoticeItem[]
           ? getPlainText(properties["태그"].rich_text)
           : "";
 
-      const image =
-        properties["파일과 미디어"]?.type === "files"
-          ? getFileUrl(properties["파일과 미디어"].files as Array<{
-              type: string;
-              file?: { url: string };
-              external?: { url: string };
-            }>)
-          : "";
+      const image = proxyFileUrl(
+        page.id,
+        "파일과 미디어",
+        properties["파일과 미디어"]?.type === "files" &&
+          properties["파일과 미디어"].files.length > 0,
+      );
 
       return {
         id: page.id,
@@ -257,16 +242,12 @@ export async function getNoticeById(id: string): Promise<NoticeDetail | null> {
         ? getPlainText(properties["태그"].rich_text)
         : "";
 
-    const image =
-      properties["파일과 미디어"]?.type === "files"
-        ? getFileUrl(
-            properties["파일과 미디어"].files as Array<{
-              type: string;
-              file?: { url: string };
-              external?: { url: string };
-            }>
-          )
-        : "";
+    const image = proxyFileUrl(
+      id,
+      "파일과 미디어",
+      properties["파일과 미디어"]?.type === "files" &&
+        properties["파일과 미디어"].files.length > 0,
+    );
 
     // 페이지 블록 내용 가져오기
     const blocksResponse = await notion.blocks.children.list({
@@ -468,16 +449,12 @@ export async function getSiteData(locale: Locale = "kr"): Promise<SiteItem[]> {
           ? properties["URL"].url || "/"
           : "/";
 
-      const imageSrc =
-        properties["파일과 미디어"]?.type === "files"
-          ? getFileUrl(
-              properties["파일과 미디어"].files as Array<{
-                type: string;
-                file?: { url: string };
-                external?: { url: string };
-              }>
-            )
-          : "";
+      const imageSrc = proxyFileUrl(
+        page.id,
+        "파일과 미디어",
+        properties["파일과 미디어"]?.type === "files" &&
+          properties["파일과 미디어"].files.length > 0,
+      );
 
       return {
         id: page.id,

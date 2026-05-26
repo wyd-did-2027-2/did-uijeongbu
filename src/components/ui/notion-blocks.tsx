@@ -214,7 +214,11 @@ function NotionBlock({ block }: { block: BlockObjectResponse }) {
       const linkHref = captions.find((c) => c.href)?.href;
       const visibleCaptions = captions.filter((c) => !c.href);
       const alt = visibleCaptions.map((c) => c.plain_text).join("") || "";
-      const img = <NotionImage src={getImageUrl(block.image)} alt={alt} />;
+      const src =
+        block.image.type === "external"
+          ? block.image.external.url
+          : `/api/image-proxy?blockId=${block.id}`;
+      const img = <NotionImage src={src} alt={alt} />;
 
       return (
         <figure className="my-[8px]">
@@ -392,14 +396,6 @@ function renderRichText(richTexts: RichTextItemResponse[]) {
       </span>
     );
   });
-}
-
-function getImageUrl(
-  image:
-    | { type: "file"; file: { url: string } }
-    | { type: "external"; external: { url: string } },
-): string {
-  return image.type === "file" ? image.file.url : image.external.url;
 }
 
 function NotionImage({ src, alt }: { src: string; alt: string }) {
