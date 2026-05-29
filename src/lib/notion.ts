@@ -28,13 +28,15 @@ export interface CalendarItem {
   description?: string;
 }
 
+type DatabaseSorts = Array<
+  | { property: string; direction: "ascending" | "descending" }
+  | { timestamp: "created_time" | "last_edited_time"; direction: "ascending" | "descending" }
+>;
+
 // 페이지네이션 헬퍼 함수
 async function queryDatabaseWithPagination(
   databaseId: string,
-  sorts?: Array<
-    | { property: string; direction: "ascending" | "descending" }
-    | { timestamp: "created_time" | "last_edited_time"; direction: "ascending" | "descending" }
-  >
+  sorts?: DatabaseSorts
 ): Promise<PageObjectResponse[]> {
   let allResults: PageObjectResponse[] = [];
   let hasMore = true;
@@ -57,6 +59,25 @@ async function queryDatabaseWithPagination(
   }
 
   return allResults;
+}
+
+async function queryDatabaseWithOptionalSort(
+  databaseId: string,
+  preferredSorts: DatabaseSorts,
+  fallbackSorts?: DatabaseSorts
+): Promise<PageObjectResponse[]> {
+  const database = await notion.databases.retrieve({ database_id: databaseId });
+  const properties = "properties" in database ? database.properties : {};
+
+  const sorts = preferredSorts.filter((sort) => {
+    if (!("property" in sort)) return true;
+    return sort.property in properties;
+  });
+
+  return queryDatabaseWithPagination(
+    databaseId,
+    sorts.length > 0 ? sorts : fallbackSorts
+  );
 }
 
 function getPlainText(richText: RichTextItemResponse[]): string {
@@ -332,9 +353,11 @@ export async function getYoutubeData(locale: Locale = "kr"): Promise<YoutubeItem
       return [];
     }
 
-    const pages = await queryDatabaseWithPagination(databaseId, [
-      { property: "날짜", direction: "descending" },
-    ]);
+    const pages = await queryDatabaseWithOptionalSort(
+      databaseId,
+      [{ property: "게시일", direction: "descending" }],
+      [{ property: "날짜", direction: "descending" }]
+    );
 
     return pages.map((page) => {
       const properties = page.properties;
@@ -342,11 +365,6 @@ export async function getYoutubeData(locale: Locale = "kr"): Promise<YoutubeItem
       const title =
         properties["제목"]?.type === "title"
           ? getPlainText(properties["제목"].title)
-          : "";
-
-      const date =
-        properties["날짜"]?.type === "date"
-          ? formatDate(properties["날짜"].date)
           : "";
 
       const videoId =
@@ -358,7 +376,7 @@ export async function getYoutubeData(locale: Locale = "kr"): Promise<YoutubeItem
         id: page.id,
         videoId,
         title,
-        date,
+        date: "",
       };
     });
   } catch (error) {
