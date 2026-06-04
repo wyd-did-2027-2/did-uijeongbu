@@ -16,7 +16,7 @@ export const content = {
     lang: "ko",
     metadata: {
       title: "2027 WYD 의정부교구대회 공식 사이트",
-      description: "2027 WYD 의정부교구대회(DID) 일정, 공지, 관련 자료와 참가 정보를 확인하세요.",
+      description: "의정부교구에서 열리는 교구대회(DID) 프로그램 안내, 참가 신청, 홈스테이 및 봉사자 정보를 확인하세요. 전 세계 청년들과 함께하는 신앙의 축제가 시작됩니다.",
       keywords:
         "2027 WYD 의정부교구대회, 의정부교구, WYD, DID, 교구대회, 일정, 공지사항, 관련 자료, 참가 신청, 홈스테이, 봉사자, 봉헌하기",
       ogLocale: "ko_KR",
