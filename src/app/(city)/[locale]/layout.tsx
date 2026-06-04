@@ -22,14 +22,19 @@ export async function generateMetadata({
   const t = content[locale].metadata;
 
   return {
-    title: t.title,
+    title: { absolute: t.title },
     description: t.description,
+    keywords: t.keywords,
     metadataBase: new URL(siteConfig.url),
     alternates: {
       canonical: `/${locale}`,
       languages: {
         "ko-KR": "/kr",
         "en-US": "/en",
+        "x-default": "/kr",
+      },
+      types: {
+        "application/rss+xml": `${siteConfig.url}/rss.xml`,
       },
     },
     openGraph: {
@@ -38,6 +43,7 @@ export async function generateMetadata({
       url: `${siteConfig.url}/${locale}`,
       siteName: siteConfig.name,
       locale: t.ogLocale,
+      alternateLocale: locale === "kr" ? ["en_US"] : ["ko_KR"],
       type: "website",
       images: [
         {

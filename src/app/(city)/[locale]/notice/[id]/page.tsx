@@ -1,10 +1,13 @@
 import Link from "next/link";
+
+import JsonLd from "@/components/json-ld";
 import { Tag } from "@/components/ui/tag";
 import { NotionBlocks } from "@/components/ui/notion-blocks";
 import { getNoticeById, getAllNoticeIds } from "@/lib/notion";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/content";
-import { content } from "@/lib/content";
+import { content, siteConfig } from "@/lib/content";
+import { createBreadcrumbJsonLd } from "@/lib/structured-data";
 
 interface PageProps {
   params: Promise<{ id: string; locale: string }>;
@@ -33,9 +36,16 @@ export default async function NoticePage({ params }: PageProps) {
   }
 
   const t = content[locale];
+  const noticeUrl = `${siteConfig.url}/${locale}/notice/${notice.id}`;
+  const breadcrumbJsonLd = createBreadcrumbJsonLd([
+    { name: t.metadata.title, url: `${siteConfig.url}/${locale}` },
+    { name: t.sections.notice, url: `${siteConfig.url}/${locale}#notice` },
+    { name: notice.title, url: noticeUrl },
+  ]);
 
   return (
     <div className="min-h-screen bg-background">
+      <JsonLd data={breadcrumbJsonLd} />
       <div className="max-w-3xl mx-auto px-4 py-12">
         <Link
           href={`/${locale}`}
