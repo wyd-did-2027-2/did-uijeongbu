@@ -8,7 +8,7 @@ export function isLocale(value: string): value is Locale {
 export const siteConfig = {
   name: "2027 WYD 의정부교구대회 공식 사이트",
   url: "https://www.wyd2027did-uijeongbu.org",
-  ogImage: "/logo.svg",
+  ogImage: "https://r2-image-server.masterforce999.workers.dev/opengraph-image.png",
 };
 
 export const content = {
