@@ -47,10 +47,10 @@ export default async function Home({
     <>
       <JsonLd data={createWebSiteJsonLd(locale)} />
       <SliderSection locale={locale} />
+      <SiteSection items={siteItems} locale={locale} />
       <CalendarSection items={calendarItems} locale={locale} />
       <NoticeSection items={noticeItems} locale={locale} />
       <YoutubeSection items={youtubeItems} locale={locale} />
-      <SiteSection items={siteItems} locale={locale} />
       <FaqSection items={faqItems} locale={locale} />
     </>
   );
