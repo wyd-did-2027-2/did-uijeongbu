@@ -1,4 +1,5 @@
 import type { FaqItem } from "@/lib/notion";
+import { renderRichText } from "./ui/notion-rich-text";
 
 interface FaqProps {
   items: FaqItem[];
@@ -33,7 +34,7 @@ export default function Faq({ items }: FaqProps) {
               <div className="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] group-has-checked:grid-rows-[1fr]">
                 <div className="overflow-hidden">
                   <div className="px-4 py-8 body01M max-[1079px]:px-2 max-[1079px]:py-6 whitespace-pre-line">
-                    {content}
+                    {renderRichText(content)}
                   </div>
                 </div>
               </div>

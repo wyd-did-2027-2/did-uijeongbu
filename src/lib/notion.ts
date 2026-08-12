@@ -389,7 +389,8 @@ export async function getYoutubeData(locale: Locale = "kr"): Promise<YoutubeItem
 export interface FaqItem {
   id: string;
   title: string;
-  content: string;
+  // 링크(href)·서식을 유지해야 하므로 plain text 대신 rich_text 원본을 넘긴다
+  content: RichTextItemResponse[];
 }
 
 export async function getFaqData(locale: Locale = "kr"): Promise<FaqItem[]> {
@@ -420,8 +421,8 @@ export async function getFaqData(locale: Locale = "kr"): Promise<FaqItem[]> {
 
       const content =
         properties["내용"]?.type === "rich_text"
-          ? getPlainText(properties["내용"].rich_text)
-          : "";
+          ? properties["내용"].rich_text
+          : [];
 
       return {
         id,
