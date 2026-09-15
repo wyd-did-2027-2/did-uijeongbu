@@ -3,6 +3,7 @@ import Link from "next/link";
 import JsonLd from "@/components/json-ld";
 import { Tag } from "@/components/ui/tag";
 import { NotionBlocks } from "@/components/ui/notion-blocks";
+import { NoticeAttachments } from "@/components/ui/notice-attachments";
 import { getNoticeById, getAllNoticeIds } from "@/lib/notion";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/content";
@@ -79,6 +80,7 @@ export default async function NoticePage({ params }: PageProps) {
             <div className="prose prose-gray max-w-none">
               <NotionBlocks blocks={notice.blocks} />
             </div>
+            <NoticeAttachments attachments={notice.attachments} locale={locale} />
           </div>
         </article>
 

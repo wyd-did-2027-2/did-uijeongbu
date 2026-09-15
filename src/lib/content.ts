@@ -56,6 +56,8 @@ export const content = {
     },
     notice: {
       backLink: "돌아가기",
+      attachments: "첨부파일",
+      openFile: "새 창에서 열기",
     },
     common: {
       prev: "이전",
@@ -116,6 +118,8 @@ export const content = {
     },
     notice: {
       backLink: "Go back",
+      attachments: "Attachments",
+      openFile: "Open in new tab",
     },
     common: {
       prev: "Previous",

@@ -176,6 +176,14 @@ export interface NoticeItem {
 export interface NoticeDetail extends NoticeItem {
   content: string;
   blocks: BlockObjectResponse[];
+  attachments: { name: string; href: string }[];
+}
+
+function getNoticeImage(page: PageObjectResponse): string {
+  const property = page.properties["파일과 미디어"];
+  const first = property?.type === "files" ? property.files[0] : undefined;
+  // The image proxy serves the first file; PDFs must not enter Next's image optimizer.
+  return proxyFileUrl(page.id, "파일과 미디어", !!first && /\.(png|jpe?g|gif|webp|avif|svg)$/i.test(first.name));
 }
 
 function proxyFileUrl(pageId: string, prop: string, hasFiles: boolean): string {
@@ -214,12 +222,7 @@ export async function getNoticeData(locale: Locale = "kr"): Promise<NoticeItem[]
           ? getPlainText(properties["태그"].rich_text)
           : "";
 
-      const image = proxyFileUrl(
-        page.id,
-        "파일과 미디어",
-        properties["파일과 미디어"]?.type === "files" &&
-          properties["파일과 미디어"].files.length > 0,
-      );
+      const image = getNoticeImage(page);
 
       return {
         id: page.id,
@@ -263,12 +266,14 @@ export async function getNoticeById(id: string): Promise<NoticeDetail | null> {
         ? getPlainText(properties["태그"].rich_text)
         : "";
 
-    const image = proxyFileUrl(
-      id,
-      "파일과 미디어",
-      properties["파일과 미디어"]?.type === "files" &&
-        properties["파일과 미디어"].files.length > 0,
-    );
+    const image = getNoticeImage(page);
+    const files = properties["파일과 미디어"];
+    const attachments = files?.type === "files"
+      ? files.files.map((file) => ({
+          name: file.name,
+          href: `/api/notice-file?${new URLSearchParams({ pageId: page.id, name: file.name })}`,
+        }))
+      : [];
 
     // 페이지 블록 내용 가져오기
     const blocksResponse = await notion.blocks.children.list({
@@ -318,6 +323,7 @@ export async function getNoticeById(id: string): Promise<NoticeDetail | null> {
       image,
       content,
       blocks,
+      attachments,
     };
   } catch {
     return null;
